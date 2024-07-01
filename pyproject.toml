@@ -1,0 +1,9 @@
+[project]
+name = "cs-foundations"
+version = "0.1.0"
+description = "Computer Science Systems Foundations & Concurrency Labs"
+authors = [{name = "vbhvx", email = "222459697+vbhvx@users.noreply.github.com"}]
+requires-python = ">=3.9"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
