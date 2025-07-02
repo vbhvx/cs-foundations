@@ -29,3 +29,26 @@ class TcpSyncookie:
         """Reset internal state while retaining configuration."""
         self.state.clear()
         self.metrics["operations"] += 1
+
+    def execute(self, key: str, payload: Any = None) -> Tuple[bool, Any]:
+        """Execute core operational step for TCP SYN Cookie Flood Protection."""
+        if not self.is_active:
+            self.metrics["errors"] += 1
+            return False, "Inactive state"
+        
+        self.metrics["operations"] += 1
+        if len(self.state) >= self.capacity and key not in self.state:
+            self.metrics["errors"] += 1
+            return False, "Capacity exceeded"
+        
+        self.state[key] = payload
+        self.metrics["hits"] += 1
+        return True, payload
+
+    def query(self, key: str) -> Optional[Any]:
+        """Query state record by key."""
+        return self.state.get(key)
+
+    def size(self) -> int:
+        """Return total active elements in state."""
+        return len(self.state)
